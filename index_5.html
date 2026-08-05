@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LP制作ヒアリングシート | KEITA SNS SUPPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F8F2;
+    --surface:#FFFFFF;
+    --forest-deep:#1E4429;
+    --forest:#2E6B3E;
+    --leaf:#5AA46B;
+    --leaf-soft:#E4EFE2;
+    --gold:#C69A41;
+    --gold-deep:#A87E2C;
+    --ink:#24322B;
+    --muted:#6E7C72;
+    --line:#E1E8DE;
+    --radius:16px;
+    --shadow:0 4px 24px rgba(30,68,41,.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP",sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 120px;}
+
+  /* Progress bar */
+  .progress-bar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(245,248,242,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .progress-inner{max-width:760px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;}
+  .progress-track{flex:1;height:8px;background:var(--leaf-soft);border-radius:99px;overflow:hidden;}
+  .progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--leaf),var(--forest));border-radius:99px;transition:width .4s ease;}
+  .progress-label{font-size:.8rem;color:var(--forest);font-weight:700;white-space:nowrap;font-family:"Zen Kaku Gothic New";}
+
+  /* Header */
+  header{text-align:center;padding:56px 0 40px;}
+  .ring{width:60px;height:60px;margin:0 auto 20px;display:block;}
+  .brand{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1rem;letter-spacing:.14em;color:var(--gold-deep);margin:0 0 6px;text-transform:uppercase;}
+  header h1{font-family:"Zen Kaku Gothic New";font-weight:900;font-size:clamp(1.6rem,5vw,2.3rem);margin:0 0 14px;letter-spacing:.02em;color:var(--forest-deep);}
+  header p{color:var(--muted);font-size:.96rem;max-width:520px;margin:0 auto;}
+  .how{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 24px;margin:28px auto 0;max-width:560px;text-align:left;box-shadow:var(--shadow);
+  }
+  .how h3{margin:0 0 10px;font-family:"Zen Kaku Gothic New";font-size:.92rem;color:var(--forest);display:flex;align-items:center;gap:8px;}
+  .how ol{margin:0;padding-left:1.2em;font-size:.88rem;color:var(--muted);}
+  .how li{margin-bottom:4px;}
+  .how b{color:var(--ink);}
+
+  /* Section */
+  section{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:32px 28px;margin-top:22px;box-shadow:var(--shadow);
+    scroll-margin-top:70px;
+  }
+  .sec-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+  .sec-num{
+    flex:none;width:34px;height:34px;border-radius:10px;
+    background:var(--leaf-soft);color:var(--forest);
+    font-family:"Cormorant Garamond",serif;font-weight:600;font-size:1.25rem;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .sec-head h2{margin:0;font-family:"Zen Kaku Gothic New";font-weight:700;font-size:1.2rem;color:var(--forest-deep);}
+  .sec-desc{color:var(--muted);font-size:.85rem;margin:0 0 22px 48px;}
+
+  .field{margin-bottom:22px;}
+  .field:last-child{margin-bottom:0;}
+  label.q{display:block;font-family:"Zen Kaku Gothic New";font-weight:500;font-size:.95rem;margin-bottom:4px;color:var(--ink);}
+  label.q .req{color:var(--gold-deep);font-size:.72rem;font-weight:700;margin-left:6px;vertical-align:middle;}
+  label.q .opt{color:var(--muted);font-size:.72rem;margin-left:6px;vertical-align:middle;}
+  .hint{font-size:.8rem;color:var(--muted);margin:0 0 8px;}
+  input[type=text],input[type=url],textarea,select{
+    width:100%;font-family:"Noto Sans JP",sans-serif;font-size:.95rem;color:var(--ink);
+    padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:#FCFDFB;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  textarea{resize:vertical;min-height:80px;line-height:1.7;}
+  input:focus,textarea:focus,select:focus{
+    outline:none;border-color:var(--leaf);box-shadow:0 0 0 3px rgba(90,164,107,.16);background:#fff;
+  }
+  ::placeholder{color:#AEBBB0;}
+
+  /* choice chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{position:relative;}
+  .chip input{position:absolute;opacity:0;pointer-events:none;}
+  .chip label{
+    display:block;padding:8px 15px;border:1.5px solid var(--line);border-radius:99px;
+    font-size:.85rem;cursor:pointer;transition:all .18s;background:#FCFDFB;color:var(--muted);user-select:none;
+  }
+  .chip input:checked + label{background:var(--forest);border-color:var(--forest);color:#fff;font-weight:500;}
+  .chip input:focus-visible + label{box-shadow:0 0 0 3px rgba(90,164,107,.3);}
+
+  .row3{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:540px){.row3{grid-template-columns:1fr;}}
+
+  .ref-block{border:1px dashed var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:#FCFDFB;}
+  .ref-block .field{margin-bottom:12px;}
+  .ref-block .field:last-child{margin-bottom:0;}
+  .ref-tag{font-size:.78rem;color:var(--forest);font-weight:700;font-family:"Zen Kaku Gothic New";margin-bottom:8px;}
+  .ref-gallery{background:var(--leaf-soft);border-radius:12px;padding:16px;margin-bottom:16px;}
+  .ref-gallery-lead{margin:0 0 12px;font-size:.85rem;font-weight:700;color:var(--forest-deep);font-family:"Zen Kaku Gothic New";}
+  .ref-link{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin-bottom:8px;text-decoration:none;transition:border-color .18s,transform .18s;}
+  .ref-link:hover{border-color:var(--leaf);transform:translateX(3px);}
+  .ref-link:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(90,164,107,.3);}
+  .ref-link-name{display:block;font-family:"Zen Kaku Gothic New";font-weight:700;font-size:.92rem;color:var(--forest);}
+  .ref-link-name::after{content:" ↗";font-size:.8rem;color:var(--muted);}
+  .ref-link-desc{display:block;font-size:.78rem;color:var(--muted);margin-top:2px;}
+  .ref-gallery-note{margin:10px 0 0;font-size:.78rem;color:var(--forest-deep);}
+
+  /* Generate */
+  .generate{text-align:center;margin-top:40px;}
+  .btn-gen{
+    font-family:"Zen Kaku Gothic New";font-weight:700;font-size:1.05rem;color:#fff;
+    background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+    border:none;border-radius:14px;padding:18px 44px;cursor:pointer;
+    box-shadow:0 8px 24px rgba(168,126,44,.28);transition:transform .15s,box-shadow .15s;
+  }
+  .btn-gen:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(168,126,44,.36);}
+  .btn-gen:active{transform:translateY(0);}
+  .gen-note{font-size:.8rem;color:var(--muted);margin-top:12px;}
+
+  .output{margin-top:28px;display:none;}
+  .output.show{display:block;animation:fade .5s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .output h2{font-family:"Zen Kaku Gothic New";font-size:1.15rem;color:var(--forest-deep);display:flex;align-items:center;gap:10px;}
+  #outputText{width:100%;min-height:320px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.6;background:var(--forest-deep);color:#EAF2E7;border:none;border-radius:12px;padding:20px;}
+  .out-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .send-status{font-size:.85rem;margin-top:12px;min-height:1.3em;font-family:"Zen Kaku Gothic New";}
+  .send-status.ok{color:var(--forest);font-weight:700;}
+  .send-status.ng{color:#B4453B;font-weight:700;}
+  .btn-sm{font-family:"Zen Kaku Gothic New";font-weight:500;font-size:.88rem;padding:11px 20px;border-radius:10px;cursor:pointer;border:1.5px solid var(--forest);background:var(--forest);color:#fff;transition:opacity .15s;}
+  .btn-sm:hover{opacity:.88;}
+  .btn-sm.ghost{background:#fff;color:var(--forest);}
+  .save-status{font-size:.78rem;color:var(--leaf);text-align:center;margin-top:24px;min-height:1.2em;}
+
+  footer{text-align:center;margin-top:50px;color:var(--muted);font-size:.8rem;}
+  footer .fbrand{font-family:"Cormorant Garamond",serif;font-style:italic;letter-spacing:.1em;color:var(--gold-deep);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important;scroll-behavior:auto!important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+    <span class="progress-label" id="pLabel">入力 0%</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <svg class="ring" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+      <circle cx="30" cy="30" r="27" stroke="#2E6B3E" stroke-width="2.5"/>
+      <circle cx="30" cy="30" r="18" stroke="#5AA46B" stroke-width="2.5"/>
+      <circle cx="30" cy="30" r="8" fill="#C69A41"/>
+    </svg>
+    <p class="brand">KEITA SNS SUPPORT</p>
+    <h1>LP制作ヒアリングシート</h1>
+    <p>このシートにご記入いただくと、そのままランディングページ（1枚もの）の制作に取りかかれます。わかる範囲でかまいません。空欄の項目は「おまかせ」として、こちらで最適な形をご提案します。</p>
+
+    <div class="how">
+      <h3>▸ このシートの使い方</h3>
+      <ol>
+        <li>上から順に、書けるところから記入してください</li>
+        <li>入力内容は<b>この端末に自動保存</b>されます（途中で閉じても消えません）</li>
+        <li>最後に<b>「制作指示書を作成する」</b>ボタンを押すと、依頼内容がまとまります</li>
+        <li>できあがった文章をコピーして、担当者へお送りください</li>
+      </ol>
+    </div>
+  </header>
+
+  <!-- 1. 基本情報 -->
+  <section id="s1">
+    <div class="sec-head"><div class="sec-num">1</div><h2>基本情報</h2></div>
+    <p class="sec-desc">まずは、どんなサービス・お店のLPかを教えてください。</p>
+
+    <div class="field">
+      <label class="q" for="f_name">サービス名・店舗名<span class="req">★必須</span></label>
+      <input type="text" id="f_name" data-req placeholder="例）カフェ もりのテーブル / 〇〇整体院 / けいたのAI時短部">
+    </div>
+    <div class="field">
+      <label class="q" for="f_biz">事業内容・何をしているか<span class="req">★必須</span></label>
+      <input type="text" id="f_biz" data-req placeholder="例）流山おおたかの森のカフェ。ランチと自家焙煎コーヒーが看板">
+    </div>
+    <div class="field">
+      <label class="q" for="f_goal">このLPで一番達成したいこと<span class="req">★必須</span></label>
+      <p class="hint">見ていただいた方に、どうしてほしいか。1つに絞るほど、伝わるLPになります。</p>
+      <div class="chips" id="goalChips">
+        <span class="chip"><input type="radio" name="goal" id="g1" value="予約・来店を増やす"><label for="g1">予約・来店</label></span>
+        <span class="chip"><input type="radio" name="goal" id="g2" value="問い合わせ・相談を増やす"><label for="g2">問い合わせ・相談</label></span>
+        <span class="chip"><input type="radio" name="goal" id="g3" value="商品・サービスの購入"><label for="g3">購入</label></span>
+        <span class="chip"><input type="radio" name="goal" id="g4" value="無料コミュニティ・イベントへの参加"><label for="g4">参加登録</label></span>
+        <span class="chip"><input type="radio" name="goal" id="g5" value="資料請求・LINE登録"><label for="g5">資料請求・登録</label></span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="q" for="f_cta_dest">申込・連絡の受け先<span class="req">★必須</span></label>
+      <p class="hint">ボタンを押した先です。URL・LINE・電話番号などをご記入ください。</p>
+      <input type="text" id="f_cta_dest" data-req placeholder="例）公式LINE / 予約フォームURL / 電話 04-xxxx-xxxx">
+    </div>
+    <div class="field">
+      <label class="q" for="f_current">今あるサイト・SNSのURL<span class="opt">任意</span></label>
+      <input type="url" id="f_current" placeholder="例）https://instagram.com/... （あれば）">
+    </div>
+  </section>
+
+  <!-- 2. ターゲット -->
+  <section id="s2">
+    <div class="sec-head"><div class="sec-num">2</div><h2>届けたい相手</h2></div>
+    <p class="sec-desc">どんな方に届けたいかを教えてください。ここが決まると、言葉もデザインも自然と決まります。</p>
+
+    <div class="field">
+      <label class="q" for="f_target">どんな人に見てほしいか<span class="req">★必須</span></label>
+      <p class="hint">年代・性別・状況など。具体的なほど、伝わりやすくなります。</p>
+      <input type="text" id="f_target" data-req placeholder="例）流山周辺に住む30〜40代の子育て中の女性">
+    </div>
+    <div class="field">
+      <label class="q" for="f_pains">その人が抱えている悩み・困りごと<span class="req">★必須</span></label>
+      <p class="hint">3〜5個ほど。お客様が実際に口にしそうな言葉だと、より伝わります。改行で区切ってご記入ください。</p>
+      <textarea id="f_pains" data-req placeholder="例）
+・子どもがいるとゆっくりカフェに行けない
+・落ち着ける場所が近所にない
+・体にいいものを気軽に食べたい"></textarea>
+    </div>
+  </section>
+
+  <!-- 3. 中身 -->
+  <section id="s3">
+    <div class="sec-head"><div class="sec-num">3</div><h2>伝えたい中身</h2></div>
+    <p class="sec-desc">LPに載せる中身です。思いつくところから、で結構です。空欄はこちらで考えます。</p>
+
+    <div class="field">
+      <label class="q" for="f_catch">キャッチコピー案<span class="opt">任意</span></label>
+      <p class="hint">一番に伝えたい一言です。決まっていなければ、空欄のままで結構です（こちらでご提案します）。</p>
+      <input type="text" id="f_catch" placeholder="例）子連れでも、ちゃんと一息つける場所。">
+    </div>
+    <div class="field">
+      <label class="q" for="f_subcatch">サブコピー（キャッチの補足）<span class="opt">任意</span></label>
+      <p class="hint">キャッチの下に添える、もう一言です。</p>
+      <input type="text" id="f_subcatch" placeholder="例）流山おおたかの森駅から徒歩5分。予約なしでどうぞ。">
+    </div>
+    <div class="field">
+      <label class="q" for="f_fv_visual">トップで一番見せたい写真・雰囲気<span class="opt">任意</span></label>
+      <p class="hint">最初の画面に大きく出したいイメージです。写真がなければ言葉でかまいません。</p>
+      <input type="text" id="f_fv_visual" placeholder="例）店内でくつろぐ親子の様子 / 看板メニューのアップ">
+    </div>
+    <div class="field">
+      <label class="q" for="f_solution">悩みをどう解決するか<span class="req">★必須</span></label>
+      <p class="hint">「うちなら、こうして差し上げられます」を、ひとことで。</p>
+      <input type="text" id="f_solution" data-req placeholder="例）キッズスペース完備で、ママがゆっくりできるカフェ">
+    </div>
+    <div class="field">
+      <label class="q" for="f_benefit">利用すると、どう良くなるか（3つ）<span class="req">★必須</span></label>
+      <p class="hint">「できること」より「手に入る変化・気持ち」を。改行で区切ってご記入ください。</p>
+      <textarea id="f_benefit" data-req placeholder="例）
+・子どもを見ながら、温かいうちにランチを食べられる
+・ママ友とゆっくり話せる時間が持てる
+・罪悪感なく、自分をいたわる時間になる"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_strength">選ばれる理由・他との違い・強み<span class="opt">任意</span></label>
+      <textarea id="f_strength" placeholder="例）
+・地域で唯一のキッズスペース付きカフェ
+・食材は地元農家から直接仕入れ
+・店主自身も2児の母"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_proof">実績・お客様の声・数字<span class="opt">任意</span></label>
+      <p class="hint">信頼につながる材料です。口コミ、来店数、フォロワー数、ビフォーアフターなど。</p>
+      <textarea id="f_proof" placeholder="例）
+・オープン1年でリピーター率60%
+・Instagramフォロワー5,000人
+・「毎週の楽しみです」の声多数"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_menu">サービス内容・メニュー<span class="req">★必須</span></label>
+      <p class="hint">提供するものの一覧です。</p>
+      <textarea id="f_menu" data-req placeholder="例）
+・平日ランチ（11:00-14:00）
+・自家焙煎コーヒー各種
+・キッズプレート
+・テイクアウト対応"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_price">料金<span class="req">★必須</span></label>
+      <p class="hint">無料の場合は「無料」と、はっきりご記入ください。</p>
+      <input type="text" id="f_price" data-req placeholder="例）ランチ 1,200円〜 / 参加費 完全無料">
+    </div>
+    <div class="field">
+      <label class="q" for="f_bonus">特典・キャンペーン<span class="opt">任意</span></label>
+      <input type="text" id="f_bonus" placeholder="例）初回来店でドリンク1杯サービス">
+    </div>
+    <div class="field">
+      <label class="q" for="f_faq">よくある質問（Q&A）<span class="opt">任意</span></label>
+      <p class="hint">申込前の不安を、先回りして解消します。「Q → A」の形で、改行で区切ってご記入ください。</p>
+      <textarea id="f_faq" placeholder="例）
+Q. 予約は必要ですか？ → A. 平日は不要ですが、土日は予約がおすすめです
+Q. 駐車場はありますか？ → A. 店舗前に3台分ございます"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_owner">運営者・お店の紹介<span class="opt">任意</span></label>
+      <p class="hint">どなたが運営しているか。お名前・肩書き・想いなど。顔写真の有無もお書きください。</p>
+      <textarea id="f_owner" placeholder="例）
+店主：山田花子（2児の母）
+想い：自分が欲しかった『子連れでも安心できる場所』を作りました
+顔写真：あり（後日お渡しします）"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_closing">最後のひと押し・限定性<span class="opt">任意</span></label>
+      <p class="hint">締めの一言や、人数・期間などの限定があればご記入ください。</p>
+      <input type="text" id="f_closing" placeholder="例）先着20名様限定 / 今月末までのキャンペーン">
+    </div>
+  </section>
+
+  <!-- 4. デザイン -->
+  <section id="s4">
+    <div class="sec-head"><div class="sec-num">4</div><h2>デザインの好み</h2></div>
+    <p class="sec-desc">見た目の方向性です。「おまかせ」でもかまいません。</p>
+
+    <div class="field">
+      <label class="q" for="f_color">使いたい色・ブランドカラー<span class="opt">任意</span></label>
+      <p class="hint">ロゴの色や、イメージカラーがあれば。カラーコード(#)がわかると、より正確に再現できます。</p>
+      <input type="text" id="f_color" placeholder="例）深い緑と白 / #2E6B3E / おまかせ">
+    </div>
+
+    <div class="field">
+      <label class="q">文字・全体の雰囲気<span class="opt">任意</span></label>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="mood" id="m1" value="上品・落ち着き（明朝系）"><label for="m1">上品・落ち着き</label></span>
+        <span class="chip"><input type="radio" name="mood" id="m2" value="親しみ・やわらかい（丸ゴシック系）"><label for="m2">親しみ・やわらか</label></span>
+        <span class="chip"><input type="radio" name="mood" id="m3" value="スタイリッシュ・都会的（ゴシック系）"><label for="m3">スタイリッシュ</label></span>
+        <span class="chip"><input type="radio" name="mood" id="m4" value="元気・にぎやか・ポップ"><label for="m4">元気・ポップ</label></span>
+        <span class="chip"><input type="radio" name="mood" id="m5" value="おまかせ"><label for="m5">おまかせ</label></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q">写真・ビジュアルの方向<span class="opt">任意</span></label>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="photo" id="p1" value="人物ありの実写（顔が見える）"><label for="p1">人物あり実写</label></span>
+        <span class="chip"><input type="radio" name="photo" id="p2" value="商品・料理・空間の写真中心"><label for="p2">商品・空間写真</label></span>
+        <span class="chip"><input type="radio" name="photo" id="p3" value="イラスト・やわらかい絵"><label for="p3">イラスト</label></span>
+        <span class="chip"><input type="radio" name="photo" id="p4" value="写真は後で用意（仮のもので進めて可）"><label for="p4">写真は後で</label></span>
+        <span class="chip"><input type="radio" name="photo" id="p5" value="おまかせ"><label for="p5">おまかせ</label></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q">余白・情報量の好み<span class="opt">任意</span></label>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="space" id="sp1" value="ゆったり・余白多め（洗練）"><label for="sp1">ゆったり余白</label></span>
+        <span class="chip"><input type="radio" name="space" id="sp2" value="しっかり情報量（安心感）"><label for="sp2">情報しっかり</label></span>
+        <span class="chip"><input type="radio" name="space" id="sp3" value="おまかせ"><label for="sp3">おまかせ</label></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q">参考にしたいLP・サイト<span class="opt">任意</span></label>
+      <p class="hint">「こんな雰囲気が好き」というURLがあれば。<b>どこが好きか</b>まで添えていただくと、より近づけます（最大3つ）。</p>
+      <div class="ref-gallery">
+        <p class="ref-gallery-lead">▸ 思いつかない場合は、こちらで探せます（別のタブが開きます）</p>
+        <a class="ref-link" href="https://rdlp.jp/lp-archive" target="_blank" rel="noopener noreferrer">
+          <span class="ref-link-name">LP ARCHIVE</span>
+          <span class="ref-link-desc">業種・色から探せる国内最大級のLP集。まずはここ</span>
+        </a>
+        <a class="ref-link" href="https://sankoudesign.com/category/lp/" target="_blank" rel="noopener noreferrer">
+          <span class="ref-link-name">SANKOU!</span>
+          <span class="ref-link-desc">おしゃれで見やすいLP・サイト集。スマホ表示も豊富</span>
+        </a>
+        <a class="ref-link" href="https://goworkship.com/magazine/hero-area/" target="_blank" rel="noopener noreferrer">
+          <span class="ref-link-name">ヒーローエリア実例集</span>
+          <span class="ref-link-desc">最初の画面（ファーストビュー）の見せ方の参考に</span>
+        </a>
+        <p class="ref-gallery-note">気に入ったページのURLを、下の欄に貼り付けてください。</p>
+      </div>
+      <div class="ref-block">
+        <div class="ref-tag">参考 1</div>
+        <div class="field"><input type="url" id="f_ref1_url" placeholder="URL（例：https://...）"></div>
+        <div class="field"><input type="text" id="f_ref1_note" placeholder="好きなポイント（例：配色と、上の余白感）"></div>
+      </div>
+      <div class="ref-block">
+        <div class="ref-tag">参考 2</div>
+        <div class="field"><input type="url" id="f_ref2_url" placeholder="URL"></div>
+        <div class="field"><input type="text" id="f_ref2_note" placeholder="好きなポイント"></div>
+      </div>
+      <div class="ref-block">
+        <div class="ref-tag">参考 3</div>
+        <div class="field"><input type="url" id="f_ref3_url" placeholder="URL"></div>
+        <div class="field"><input type="text" id="f_ref3_note" placeholder="好きなポイント"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q" for="f_keywords">世界観を表すキーワード（3語）<span class="opt">任意</span></label>
+      <p class="hint">制作で迷ったときの、判断の軸になります。</p>
+      <input type="text" id="f_keywords" placeholder="例）あたたかい・ていねい・ちょっと特別">
+    </div>
+  </section>
+
+  <!-- 5. アニメーション -->
+  <section id="s5">
+    <div class="sec-head"><div class="sec-num">5</div><h2>動き（アニメーション）</h2></div>
+    <p class="sec-desc">スクロールで要素がふわっと現れる、などの動きです。なくてもかまいません。</p>
+
+    <div class="field">
+      <label class="q">動きの強さ<span class="opt">任意</span></label>
+      <div class="chips">
+        <span class="chip"><input type="radio" name="anim" id="a1" value="控えめ・上品（おすすめ）"><label for="a1">控えめ・上品</label></span>
+        <span class="chip"><input type="radio" name="anim" id="a2" value="標準的にしっかり動かす"><label for="a2">標準</label></span>
+        <span class="chip"><input type="radio" name="anim" id="a3" value="にぎやか・元気に"><label for="a3">にぎやか</label></span>
+        <span class="chip"><input type="radio" name="anim" id="a4" value="動きはつけない"><label for="a4">動きなし</label></span>
+        <span class="chip"><input type="radio" name="anim" id="a5" value="おまかせ"><label for="a5">おまかせ</label></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="q">動かしたい場所（複数可）<span class="opt">任意</span></label>
+      <div class="chips">
+        <span class="chip"><input type="checkbox" id="ap1" value="スクロールで各セクションがふわっと表示"><label for="ap1">スクロールでふわっと表示</label></span>
+        <span class="chip"><input type="checkbox" id="ap2" value="トップの見出しに動きをつける"><label for="ap2">トップの見出し</label></span>
+        <span class="chip"><input type="checkbox" id="ap3" value="ボタンが押したくなる反応（ホバー/タップ）"><label for="ap3">ボタンの反応</label></span>
+        <span class="chip"><input type="checkbox" id="ap4" value="実績の数字がカウントアップ"><label for="ap4">数字カウントアップ</label></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. その他 -->
+  <section id="s6">
+    <div class="sec-head"><div class="sec-num">6</div><h2>その他・ご要望</h2></div>
+    <p class="sec-desc">最後に、お伝えしておきたいことがあれば、自由にご記入ください。</p>
+
+    <div class="field">
+      <label class="q" for="f_must">絶対に入れたい要素・こだわり<span class="opt">任意</span></label>
+      <textarea id="f_must" placeholder="例）お店の地図は必ず入れてほしい / インスタの投稿を埋め込みたい"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="f_avoid">避けたいこと・イメージと違うもの<span class="opt">任意</span></label>
+      <textarea id="f_avoid" placeholder="例）チカチカ点滅する動きは苦手 / 高級すぎる雰囲気は避けたい"></textarea>
+    </div>
+  </section>
+
+  <div class="generate">
+    <button class="btn-gen" id="genBtn">制作指示書を作成する</button>
+    <p class="gen-note">★必須の項目が埋まっていると、より正確な指示書になります</p>
+  </div>
+
+  <div class="output" id="outputBox">
+    <h2>▸ 制作指示書ができました</h2>
+    <p class="hint" id="outSubtitle">内容をご確認のうえ、下のボタンから担当者へ送信してください。</p>
+    <textarea id="outputText" readonly></textarea>
+    <div class="out-actions">
+      <button class="btn-sm" id="sendBtn">この内容で担当者に送信</button>
+      <button class="btn-sm ghost" id="copyBtn">コピーする</button>
+      <button class="btn-sm ghost" id="clearBtn">入力を全部消す</button>
+    </div>
+    <p class="send-status" id="sendStatus"></p>
+  </div>
+
+  <p class="save-status" id="saveStatus"></p>
+
+  <footer>
+    <p><span class="fbrand">KEITA SNS SUPPORT</span><br>人と店、人と情報、人と人をつなぐ。</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     ▼▼▼ ここだけ設定してください ▼▼▼
+     Google Apps Script で発行した「ウェブアプリのURL」を
+     下の '' の中に貼り付けてください。
+     （空のままだと「送信」ボタンは表示されず、コピー運用になります）
+  ============================================================ */
+  var SEND_URL = "";
+  /* ▲▲▲ 設定はここまで ▲▲▲ */
+
+  var KEY = "keita_lp_hearing_v1";
+
+  // 全入力要素を集める（id を持つもの + name グループ）
+  function allInputs(){
+    return Array.prototype.slice.call(
+      document.querySelectorAll('input[id], textarea[id], input[type=radio], input[type=checkbox]')
+    );
+  }
+
+  // ---- 保存 / 復元（localStorage が無い環境でも壊れないよう try-catch）----
+  function saveState(){
+    try{
+      var data = {};
+      allInputs().forEach(function(el){
+        if(el.type === 'radio' || el.type === 'checkbox'){
+          data[el.id || (el.name+'_'+el.value)] = el.checked;
+        } else if(el.id){
+          data[el.id] = el.value;
+        }
+      });
+      localStorage.setItem(KEY, JSON.stringify(data));
+      flash("自動保存しました ✓");
+    }catch(e){/* 保存不可の環境では無視 */}
+  }
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(!raw) return;
+      var data = JSON.parse(raw);
+      allInputs().forEach(function(el){
+        var k = el.id || (el.name+'_'+el.value);
+        if(k in data){
+          if(el.type === 'radio' || el.type === 'checkbox') el.checked = !!data[k];
+          else el.value = data[k];
+        }
+      });
+    }catch(e){}
+  }
+
+  var flashTimer;
+  function flash(msg){
+    var s = document.getElementById('saveStatus');
+    s.textContent = msg;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function(){ s.textContent=''; }, 1600);
+  }
+
+  // ---- 進捗 ----
+  function updateProgress(){
+    var reqs = document.querySelectorAll('[data-req]');
+    var done = 0;
+    reqs.forEach(function(el){ if(el.value.trim()) done++; });
+    // 必須ラジオ（goal, cta）も含める
+    var goal = document.querySelector('input[name=goal]:checked');
+    var total = reqs.length + 1; // + goal
+    if(goal) done++;
+    var pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById('pFill').style.width = pct + '%';
+    document.getElementById('pLabel').textContent = '入力 ' + pct + '%';
+  }
+
+  // ---- ヘルパ ----
+  function v(id){ var el=document.getElementById(id); return el ? el.value.trim() : ''; }
+  function radio(name){ var el=document.querySelector('input[name='+name+']:checked'); return el ? el.value : ''; }
+  function checks(ids){
+    return ids.map(function(id){var el=document.getElementById(id);return (el&&el.checked)?el.value:null;})
+              .filter(Boolean);
+  }
+  function or(val, fallback){ return val ? val : fallback; }
+  var OM = '（未記入 → おまかせ）';
+
+  // ---- 指示書生成 ----
+  function generate(){
+    var L = [];
+    L.push('【LP制作依頼書】KEITA SNS SUPPORT');
+    L.push('');
+    L.push('以下の内容で、ランディングページ（縦1枚もの）を制作してください。');
+    L.push('');
+    L.push('■ 制作の進め方（重要）');
+    L.push('「①ファーストビュー → ②コンテンツ → ③デザイン」の順で作ってください。');
+    L.push('  1. まず STEP1（ファーストビュー）を形にし、方向性を固める');
+    L.push('  2. 次に STEP2（コンテンツ）を下に流し込む');
+    L.push('  3. 最後に STEP3（デザイン）でトーンと動きを仕上げる');
+    L.push('※ LPの印象はファーストビューでほぼ決まります。最初にFVの完成度を最優先してください。');
+    L.push('');
+    L.push('■ 共通ルール');
+    L.push('・スマホ表示を最優先（モバイルファースト）');
+    L.push('・申込ボタン(CTA)は「ファーストビュー・中盤・最後」の最低3か所に設置');
+    L.push('・空欄の項目は、他の情報から文脈に合う内容を提案して補ってください');
+    L.push('・最終成果物は単一HTMLファイル');
+    L.push('');
+    L.push('━━━━━━ 案件概要 ━━━━━━');
+    L.push('・サービス/店舗名：' + or(v('f_name'), OM));
+    L.push('・事業内容：' + or(v('f_biz'), OM));
+    L.push('・LPの一番の目的：' + or(radio('goal'), OM));
+    L.push('・申込/連絡の受け先（全CTAのリンク先）：' + or(v('f_cta_dest'), OM));
+    L.push('・既存サイト/SNS：' + or(v('f_current'), 'なし'));
+    L.push('');
+    L.push('━━━━━━ STEP1｜ファーストビュー設計（最優先） ━━━━━━');
+    L.push('画面を開いて最初に見える1画面ぶんです。3秒で「自分向けだ」と伝わるように設計してください。');
+    L.push('・キャッチコピー：' + or(v('f_catch'), OM + '（下の悩み・ベネフィットから提案）'));
+    L.push('・サブコピー：' + or(v('f_subcatch'), OM + '（キャッチを補う一文を提案）'));
+    L.push('・メインビジュアル（一番見せたい写真/雰囲気）：' + or(v('f_fv_visual'), OM));
+    L.push('・想定ターゲット（誰に3秒で刺すか）：' + or(v('f_target'), OM));
+    L.push('・FVのCTAボタン文言：目的「' + or(radio('goal'), '未設定') + '」に合った短い言葉（例：無料で参加する／今すぐ予約する）');
+    if(v('f_proof')){
+      L.push('・FVに添える信頼の一言：STEP2の実績から、最も強い数字や声を1つ抜き出して配置');
+    }
+    L.push('');
+    L.push('━━━━━━ STEP2｜コンテンツ ━━━━━━');
+    L.push('FVの下に、この順で展開してください。');
+    L.push('・ターゲットの悩み/共感：');
+    L.push(indent(or(v('f_pains'), OM)));
+    L.push('・解決策(ひとこと)：' + or(v('f_solution'), OM));
+    L.push('・得られるベネフィット：');
+    L.push(indent(or(v('f_benefit'), OM)));
+    L.push('・選ばれる理由/強み：');
+    L.push(indent(or(v('f_strength'), OM)));
+    L.push('・実績/お客様の声/数字：');
+    L.push(indent(or(v('f_proof'), OM)));
+    L.push('・サービス内容/メニュー：');
+    L.push(indent(or(v('f_menu'), OM)));
+    L.push('・料金：' + or(v('f_price'), OM));
+    if(v('f_bonus')) L.push('・特典/キャンペーン：' + v('f_bonus'));
+    L.push('・FAQ：');
+    L.push(indent(or(v('f_faq'), OM + '（申込前に出そうな不安を3つ想定して作成）')));
+    L.push('・運営者/お店紹介：');
+    L.push(indent(or(v('f_owner'), OM)));
+    L.push('・クロージング/限定性：' + or(v('f_closing'), OM));
+    L.push('');
+    L.push('━━━━━━ STEP3｜デザイン ━━━━━━');
+    L.push('・ブランドカラー：' + or(v('f_color'), OM));
+    L.push('・全体の雰囲気：' + or(radio('mood'), OM));
+    L.push('・写真/ビジュアル：' + or(radio('photo'), OM));
+    L.push('・余白/情報量：' + or(radio('space'), OM));
+    L.push('・世界観キーワード：' + or(v('f_keywords'), OM));
+    var refs = [];
+    [['f_ref1_url','f_ref1_note'],['f_ref2_url','f_ref2_note'],['f_ref3_url','f_ref3_note']].forEach(function(p,i){
+      var u=v(p[0]), n=v(p[1]);
+      if(u||n) refs.push('  参考'+(i+1)+'：'+or(u,'(URLなし)')+ (n?'  好きな点:'+n:''));
+    });
+    L.push('・参考LP：' + (refs.length ? '' : OM));
+    if(refs.length) L.push(refs.join('\n'));
+    L.push('・アニメーション（強さ）：' + or(radio('anim'), OM));
+    var aps = checks(['ap1','ap2','ap3','ap4']);
+    L.push('・アニメーション（動かす場所）：' + (aps.length ? aps.join(' / ') : OM));
+    L.push('');
+    L.push('━━━━━━ その他ご要望 ━━━━━━');
+    L.push('・必ず入れたい要素：' + or(v('f_must'), 'なし'));
+    L.push('・避けたいこと：' + or(v('f_avoid'), 'なし'));
+    L.push('');
+    L.push('━━━━━━━━━━━━━━━━━━━');
+    L.push('※ 上記の順序（FV→コンテンツ→デザイン）で、単一HTMLファイルのLPとして制作してください。');
+
+    var out = document.getElementById('outputText');
+    out.value = L.join('\n');
+    document.getElementById('outputBox').classList.add('show');
+    document.getElementById('outputBox').scrollIntoView({behavior:'smooth'});
+  }
+
+  function indent(text){
+    return text.split('\n').map(function(line){
+      line = line.trim();
+      if(!line) return '';
+      return (line.charAt(0)==='・'||line.charAt(0)==='Q'||line.charAt(0)==='A') ? '    '+line : '    ・'+line;
+    }).filter(Boolean).join('\n');
+  }
+
+  // ---- コピー ----
+  function copyOut(){
+    var ta = document.getElementById('outputText');
+    ta.select(); ta.setSelectionRange(0, 99999);
+    var ok = false;
+    try{ ok = document.execCommand('copy'); }catch(e){}
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(ta.value).then(function(){setBtn(true);},function(){setBtn(ok);});
+    } else { setBtn(ok); }
+  }
+  function setBtn(ok){
+    var b = document.getElementById('copyBtn');
+    var t = b.textContent;
+    b.textContent = ok ? 'コピーしました ✓' : '手動でコピーしてください';
+    setTimeout(function(){ b.textContent = 'コピーする'; }, 1800);
+  }
+
+  // ---- 担当者に送信 ----
+  function sendToOwner(){
+    if(!SEND_URL) return;
+    var brief = document.getElementById('outputText').value;
+    if(!brief.trim()) return;
+    var btn = document.getElementById('sendBtn');
+    var status = document.getElementById('sendStatus');
+    btn.disabled = true;
+    btn.textContent = '送信中…';
+    status.className = 'send-status';
+    status.textContent = '';
+    var payload = {
+      name: (document.getElementById('f_name').value || '').trim() || '（店舗名 未記入）',
+      brief: brief,
+      sentAt: new Date().toLocaleString('ja-JP')
+    };
+    fetch(SEND_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    }).then(function(){
+      status.className = 'send-status ok';
+      status.textContent = '✓ 送信しました。担当者からの連絡をお待ちください。';
+      btn.textContent = '送信済み ✓';
+    }).catch(function(){
+      status.className = 'send-status ng';
+      status.textContent = '送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。';
+      btn.disabled = false;
+      btn.textContent = 'この内容で担当者に送信';
+    });
+  }
+
+  // ---- クリア ----
+  function clearAll(){
+    if(!confirm('入力内容をすべて消します。よろしいですか？')) return;
+    allInputs().forEach(function(el){
+      if(el.type==='radio'||el.type==='checkbox') el.checked=false;
+      else el.value='';
+    });
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    document.getElementById('outputBox').classList.remove('show');
+    updateProgress();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // ---- 初期化 ----
+  document.addEventListener('DOMContentLoaded', function(){
+    loadState();
+    updateProgress();
+    var saveTimer;
+    document.addEventListener('input', function(){
+      updateProgress();
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveState, 600);
+    });
+    document.addEventListener('change', function(){
+      updateProgress();
+      saveState();
+    });
+    document.getElementById('genBtn').addEventListener('click', generate);
+    document.getElementById('sendBtn').addEventListener('click', sendToOwner);
+    document.getElementById('copyBtn').addEventListener('click', copyOut);
+    document.getElementById('clearBtn').addEventListener('click', clearAll);
+
+    // 送信先が未設定なら、送信ボタンを隠してコピー運用に切り替え
+    if(!SEND_URL){
+      document.getElementById('sendBtn').style.display = 'none';
+      document.getElementById('outSubtitle').textContent =
+        '下の「コピーする」で内容をコピーし、担当者へお送りください。';
+    }
+  });
+})();
+</script>
+</body>
+</html>
